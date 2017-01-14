@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/url"
 	"strings"
@@ -171,8 +172,16 @@ func (cfg *LoadCfg) RunSingleLoadSession() {
 		}}
 	}
 
+	var dial func(proto, addr string) (net.Conn, error)
+	if sockPath != "" {
+		dial = func(proto, addr string) (net.Conn, error) {
+			return net.Dial("unix", sockPath)
+		}
+	}
+
 	//overriding the default parameters
 	httpClient.Transport = &http.Transport{
+		Dial:                  dial,
 		DisableCompression:    cfg.disableCompression,
 		DisableKeepAlives:     cfg.disableKeepAlive,
 		ResponseHeaderTimeout: time.Millisecond * time.Duration(cfg.timeoutms),

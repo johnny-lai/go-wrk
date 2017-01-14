@@ -22,6 +22,7 @@ var helpFlag bool = false
 var duration int = 10 //seconds
 var goroutines int = 2
 var testUrl string
+var sockPath string
 var method string = "GET"
 var host string
 var headerStr string
@@ -43,6 +44,7 @@ func init() {
 	flag.IntVar(&goroutines, "c", 10, "Number of goroutines to use (concurrent connections)")
 	flag.IntVar(&duration, "d", 10, "Duration of test in seconds")
 	flag.IntVar(&timeoutms, "T", 1000, "Socket/request timeout in ms")
+	flag.StringVar(&sockPath, "unix", "", "Path to unix socket")
 	flag.StringVar(&method, "M", "GET", "HTTP method")
 	flag.StringVar(&host, "host", "", "Host Header")
 	flag.StringVar(&headerStr, "H", "", "header line, joined with ';'")
