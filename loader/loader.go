@@ -22,6 +22,7 @@ const (
 type LoadCfg struct {
 	duration           int //seconds
 	goroutines         int
+	sockPath           string
 	testUrl            string
 	reqBody            string
 	method             string
@@ -47,6 +48,7 @@ type RequesterStats struct {
 
 func NewLoadCfg(duration int, //seconds
 	goroutines int,
+	sockPath string,
 	testUrl string,
 	reqBody string,
 	method string,
@@ -57,7 +59,7 @@ func NewLoadCfg(duration int, //seconds
 	allowRedirects bool,
 	disableCompression bool,
 	disableKeepAlive bool) (rt *LoadCfg) {
-	rt = &LoadCfg{duration, goroutines, testUrl, reqBody, method, host, header, statsAggregator, timeoutms,
+	rt = &LoadCfg{duration, goroutines, sockPath, testUrl, reqBody, method, host, header, statsAggregator, timeoutms,
 		allowRedirects, disableCompression, disableKeepAlive, 0}
 	return
 }
@@ -173,9 +175,9 @@ func (cfg *LoadCfg) RunSingleLoadSession() {
 	}
 
 	var dial func(proto, addr string) (net.Conn, error)
-	if sockPath != "" {
+	if cfg.sockPath != "" {
 		dial = func(proto, addr string) (net.Conn, error) {
-			return net.Dial("unix", sockPath)
+			return net.Dial("unix", cfg.sockPath)
 		}
 	}
 

@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/tsliwowicz/go-wrk/loader"
-	"github.com/tsliwowicz/go-wrk/util"
+	"github.com/johnny-lai/go-wrk/loader"
+	"github.com/johnny-lai/go-wrk/util"
 )
 
 const APP_VERSION = "0.1"
@@ -117,7 +117,7 @@ func main() {
 		reqBody = string(data)
 	}
 
-	loadGen := loader.NewLoadCfg(duration, goroutines, testUrl, reqBody, method, host, header, statsAggregator, timeoutms,
+	loadGen := loader.NewLoadCfg(duration, goroutines, sockPath, testUrl, reqBody, method, host, header, statsAggregator, timeoutms,
 		allowRedirectsFlag, disableCompression, disableKeepAlive)
 
 	for i := 0; i < goroutines; i++ {
