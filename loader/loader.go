@@ -126,10 +126,12 @@ func DoRequest(httpClient *http.Client, header map[string]string, method, host, 
 		fmt.Println("redirect?")
 		//this is a bit weird. When redirection is prevented, a url.Error is retuned. This creates an issue to distinguish
 		//between an invalid URL that was provided and and redirection error.
-		rr, ok := err.(*url.Error)
-		if !ok {
-			fmt.Println("An error occured doing request", err, rr)
+		switch rr := err.(type) {
+		case *url.Error:
+			fmt.Println("A url.Error occured doing request", err, rr)
 			return
+		default:
+			fmt.Printf("An error occured doing request: %T: %v\n", err, err)
 		}
 	}
 	if resp == nil {
